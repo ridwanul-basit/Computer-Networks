@@ -1,0 +1,106 @@
+﻿R1 configuration:
+Router>en
+Router#erase startup-config
+Router>en
+Router#configure terminal
+Router(config)#hostname R1
+R1(config)#no ip domain-lookup
+R1(config)#enable secret class
+R1(config)#banner motd &
+R1(config)#line consol 0
+R1(config-line)#password cisco
+R1(config-line)#login
+R1(config-line)#exit
+R1(config)#line vty 0 4
+R1(config-line)#password cisco
+R1(config-line)#login
+R1(config-line)#exit
+R1(config)#interface fastethernet 0/0
+R1(config-if)#ip address 192.168.1.1 255.255.255.0
+R1(config-if)#no shutdown
+R1(config-if)#interface serial 0/0/0
+R1(config-if)#ip address 192.168.2.1 255.255.255.0
+R1(config-if)#clock rate 64000
+R1(config-if)#no shutdown
+R1(config-if)#
+R1(config-if)#R1>en
+Password:
+R1#copy running-config startup-config
+
+
+
+
+
+
+R2 configuration:
+Router>en
+Router#conf t
+Router(config)#hostname R2
+R2(config)#no ip domain-lookup
+R2(config)#enable secret class
+R2(config)#banner motd &
+R2(config)#line console 0
+R2(config-line)#password cisco
+R2(config-line)#login
+R2(config-line)#exit
+R2(config)#line vty 0 4
+R2(config-line)#password cisco
+R2(config-line)#login
+R2(config-line)#exit
+R2(config)#interface fastethernet 0/0
+R2(config-if)#ip address 192.168.2.2 255.255.255.0
+R2(config-if)#no shutdown
+R2(config-if)#
+R2(config-if)#interface fastethernet 0/0
+R2(config-if)#ip address 192.168.3.1 255.255.255.0
+R2(config-if)#no shutdown
+R2(config-if)#end
+
+
+
+
+
+
+CLI Commands for R1:
+R1>en
+Password:
+R1#show ip route
+R1#show ip interface brief
+
+
+
+
+
+
+CLI commands for R2:
+R2>en
+Password:
+R2#conf t
+R2(config)#interface serial 0/0/0
+R2(config-if)#interface serial 0/0/0
+R2(config-if)#ip address 192.168.2.2 255.255.255.0
+R2(config-if)#no shutdown
+R2(config-if)#end
+R2#copy running-config startup-config
+R2#show ip route
+R2#show ip interface brief
+
+
+
+
+
+
+testing pc1 to r1 connection:
+ping 192.168.1.1
+
+
+testing r1 to r2 connection:
+ping 192.168.2.2
+
+
+testing r2 to r1 connection:
+ping 192.168.2.1
+
+
+testing pc2 to r2 connection:
+ping 192.168.3.10
